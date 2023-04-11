@@ -1,0 +1,3 @@
+# NodeJs Project gitginore
+node_modules
+package-lock.json
