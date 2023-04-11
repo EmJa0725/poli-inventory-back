@@ -2,16 +2,16 @@ const express = require('express');
 
 require('dotenv').config();
 const app = express();
-const port = 8000;
 
 // Import the sequelize connection
 const sequelize = require('./db/connection');
 
-console.log('process.env.DATABASE_NAME: ', process.env.DATABASE_NAME);
 // Test .env file
-if (process.env.DATABASE_NAME) {
-    console.log('DATABASE_NAME is set');
+if (process.env.ENVIROMENT) {
+    console.log('Environment variables loaded successfully.');
+    console.log('Environment: ' + process.env.ENVIROMENT);
 } 
+const port = process.env.APP_PORT || 3000;
 
 // Test the connection
 sequelize.authenticate().then(() => {
