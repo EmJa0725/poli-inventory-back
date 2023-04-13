@@ -1,5 +1,6 @@
 const express = require('express');
 const { Product } = require('../db/models');
+const sequelize = require('../db/connection');
 
 const router = express.Router();
 
@@ -48,6 +49,28 @@ router.delete('/:id', async (req, res) => {
     } else {
         await product.destroy();
         res.send('Product deleted');
+    }
+});
+
+router.options('/', async (req, res) => {
+    try {
+        const tableName = 'products'
+        const tableColumns = await sequelize.query(`DESCRIBE ${tableName}`)
+        const columns = tableColumns[0].map(column => {
+            // Avoid id column
+            if (column.Field !== 'id') {
+                const type = column.Type.match(/^(?<type>\w+)(\((?<length>\d+)\))?/);
+                return {
+                    name: column.Field,
+                    type: type.groups.type,
+                    length: type.groups.length || null,
+                }
+            }
+        }).filter(Boolean); // Remove falsy values
+        res.status(200).json(columns);
+    } catch (error) {
+        console.error(error);
+        res.status(500).send({ message: 'An error occurred while fetching the table columns.' });
     }
 });
 

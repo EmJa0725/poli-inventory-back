@@ -2,7 +2,6 @@ const express = require('express');
 
 require('dotenv').config();
 const app = express();
-
 // Import the sequelize connection
 const sequelize = require('./db/connection');
 
@@ -24,9 +23,13 @@ sequelize.authenticate().then(() => {
 const productRoutes = require('./routes/products.js');
 const inventoryRoutes = require('./routes/inventory.js');
 
+// Use json body parser
+app.use(express.json());
+// Add prefix api to all routes
 // Use the routes
-app.use('/products', productRoutes);
-app.use('/inventory', inventoryRoutes);
+app.use('/api/products', productRoutes);
+app.use('/api/inventory', inventoryRoutes);
+
 
 // Start the server
 app.listen(port, () => {
