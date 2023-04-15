@@ -1,4 +1,5 @@
 const express = require('express');
+const cors = require('cors');
 
 require('dotenv').config();
 const app = express();
@@ -9,7 +10,7 @@ const sequelize = require('./db/connection');
 if (process.env.ENVIROMENT) {
     console.log('Environment variables loaded successfully.');
     console.log('Environment: ' + process.env.ENVIROMENT);
-} 
+}
 const port = process.env.APP_PORT || 3000;
 
 // Test the connection
@@ -18,6 +19,12 @@ sequelize.authenticate().then(() => {
 }).catch(err => {
     console.error('Unable to connect to the database:', err);
 });
+
+// Enable CORS
+app.use(cors({
+    "origin": "http://localhost:3000",
+    "preflightContinue": true,
+}));
 
 // Import the routes
 const productRoutes = require('./routes/products.js');
