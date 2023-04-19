@@ -42,3 +42,5 @@ app.use('/api/inventory', inventoryRoutes);
 app.listen(port, () => {
     console.log(`Inventory API listening at http://localhost:${port}`);
 });
+
+module.exports = app;
